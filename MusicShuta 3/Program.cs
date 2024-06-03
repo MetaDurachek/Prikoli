@@ -6,6 +6,7 @@ using System.IO;
 
 public class Track
 {
+    // убери публичные сеттеры
     public string Artist { get; set; }
     public string Album { get; set; }
     public string Title { get; set; }
@@ -22,6 +23,7 @@ public class Track
 
 public class Album
 {
+    // Title наверн стоит сделать readonly
     public string Title;
     public List<Track> Tracks;
 
@@ -69,6 +71,9 @@ public class MusicLibrary
             album.Tracks.RemoveAll(t => t.Title == title);
         }
     }
+    
+    // абстрагируйся в SearchByArtist и SearchByTitle, сделай новый приватный метод SearchBy, который получает лямбду (или как там у вас в шарпе)
+    // чтоб методы SearchByArtist и SearchByTitle вызывали а-ля SearchBy(a => a.track.Artist.Contains(Artist)
 
     public Track[] SearchByArtist(string artist)
     {
@@ -77,7 +82,7 @@ public class MusicLibrary
         {
             foreach (Track track in album.Tracks)
             {
-                if (track.Artist.Contains(artist))
+                if (track.Artist.Contains(artist)) // сделай, чтоб регистр букв игнорировался
                 {
                     result.Add(track);
                 }
@@ -205,6 +210,8 @@ class Program
                 continue;
             }
 
+            // Вынеси все действия (непосредственно логику не работу с консолью) в новый класс MusicLibraryManager
+            // чтоб разделить работу с пользовательским вводом и логику работы
             switch (choice)
             {
                 case 1:
